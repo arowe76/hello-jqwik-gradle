@@ -123,4 +123,3 @@ class PadStartProperties {
         return out.endsWith(s);
     }
 }
-
