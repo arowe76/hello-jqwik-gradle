@@ -16,8 +16,28 @@ class PadStartProperties {
     @Example
     void zero() {
         assertEquals("", PadStart.padStart("", 0, "0"));
-
     }
+
+    @Example
+    void one() {
+        assertEquals("0a", PadStart.padStart("a", 2, "0"));
+    }
+
+    @Example
+    void many() {
+        assertEquals("00000a", PadStart.padStart("a", 6, "0"));
+    }
+
+    @Example
+    void boundaryNoPaddingNeeded() {
+        assertEquals("abc", PadStart.padStart("abc", 3, "0"));
+    }
+
+    @Example
+    void emptyFillCannotPad() {
+        assertEquals("a", PadStart.padStart("a", 3, ""));
+    }
+
 
 
     /**
@@ -26,10 +46,13 @@ class PadStartProperties {
      */
 
 
+
+
     /**
      * Property #2 - No padding needed
      * |s| >= n --> padStart(s,n,f) = s
      */
+
     @Property
     boolean noPaddingWhenAlreadyLongEnough(
             @ForAll String s,
@@ -39,8 +62,6 @@ class PadStartProperties {
         Assume.that(s.length() >= n);
         return PadStart.padStart(s, n, f).equals(s);
     }
-
-
 
     /**
      * Property #3 - Original string is always a suffix
