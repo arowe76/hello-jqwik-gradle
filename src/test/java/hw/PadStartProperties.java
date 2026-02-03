@@ -2,9 +2,12 @@ package hw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.jetbrains.exported.JBRApi;
 import net.jqwik.api.*;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.*;
+
+import java.beans.BeanProperty;
 
 
 class PadStartProperties {
@@ -38,15 +41,25 @@ class PadStartProperties {
         assertEquals("a", PadStart.padStart("a", 3, ""));
     }
 
-
-
     /**
      * Property #1 - Length Guarantee
      * |padStart(s,n,f)| = max(|s|, n)...when padding is possible
      */
 
+    @Property
+    boolean lengthGuaranteeWhenFillNonEmpty(
+            @ForAll String s,
+            @ForAll @IntRange(min = 0, max = 200) int n,
+            @ForAll("nonEmptyFill") String f
+    ) {
+        String out = PadStart.padStart(s, n, f);
+        return out.length() == Math.max(s.length(), n);
+    }
 
-
+    @Provide
+    Arbitrary<String> nonEmptyFill() {
+        return Arbitraries.strings().ascii().ofMinLength(1).ofMaxLength(10);
+    }
 
     /**
      * Property #2 - No padding needed
