@@ -30,6 +30,16 @@ class PadStartProperties {
      * Property #2 - No padding needed
      * |s| >= n --> padStart(s,n,f) = s
      */
+    @Property
+    boolean noPaddingWhenAlreadyLongEnough(
+            @ForAll String s,
+            @ForAll @IntRange(min = 0, max = 200), int n,
+            @ForAll String f
+    ) {
+        Assume.that(s.length() >= n);
+        return PadStart.padStart(s, n, f).equals(s);
+    }
+
 
 
     /**
